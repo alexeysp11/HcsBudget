@@ -1,0 +1,15 @@
+.vs 
+.vscode 
+*/.vs 
+*/.vscode 
+
+*/bin
+*/obj
+
+data
+
+docs/process 
+
+HcsBudget.sln
+tests
+src/SQL

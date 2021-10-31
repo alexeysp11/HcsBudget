@@ -1,0 +1,23 @@
+<UserControl x:Class="HcsBudget.UserControls.DataOut"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:HcsBudget"
+        xmlns:uc="clr-namespace:HcsBudget.UserControls">
+    <Grid Background="Gray">
+        <ScrollViewer ScrollViewer.CanContentScroll="True" 
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <DataGrid Name="dgrCityFirm" 
+                    Background="Transparent"
+                    IsReadOnly="True"
+                    AutoGenerateColumns="False"
+                    HorizontalAlignment="Left">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Service" Width="150" />
+                    <DataGridTextColumn Header="Quantity" Width="100" />
+                    <DataGridTextColumn Header="Price" Width="100" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
