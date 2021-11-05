@@ -4,11 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HcsBudget"
+        xmlns:vm="clr-namespace:HcsBudget.ViewModels"
         xmlns:uc="clr-namespace:HcsBudget.UserControls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="HcsBudget (for Windows)" 
         MaxHeight="450" MaxWidth="800" MinHeight="450" MinWidth="800">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OutputCommand}" CommandParameter="ReloadData"
+                Key="R" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding NavigateCommand}" CommandParameter="Find"
+                Key="F" Modifiers="Ctrl" />
+    </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -39,10 +47,10 @@
                 Stroke="Black" StrokeThickness="0.5"
                 Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" />
             
-            <uc:Months Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" />
-            <uc:DataIn Grid.Row="0" Grid.Column="2" />
-            <uc:Report Grid.Row="1" Grid.Column="2" />
-            <uc:DataOut Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
+            <uc:Months x:Name="Months" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" />
+            <uc:DataIn x:Name="DataIn" Grid.Row="0" Grid.Column="2" />
+            <uc:Report x:Name="Report" Grid.Row="1" Grid.Column="2" />
+            <uc:DataOut x:Name="DataOut" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
         </Grid>
 
         <uc:StatusBar Grid.Row="2" />

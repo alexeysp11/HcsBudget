@@ -12,5 +12,17 @@ namespace HcsBudget.UserControls
         {
             InitializeComponent();
         }
+
+        private void SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            try
+            {
+                string month = (e.NewValue).ToString(); 
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception"); 
+            }
+        }
     }
 }

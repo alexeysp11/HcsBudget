@@ -13,9 +13,12 @@
                     AutoGenerateColumns="False"
                     HorizontalAlignment="Left">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Service" Width="150" />
-                    <DataGridTextColumn Header="Quantity" Width="100" />
-                    <DataGridTextColumn Header="Price" Width="100" />
+                    <DataGridTextColumn Header="Service" Width="100" />
+                    <DataGridTextColumn Header="Quantity" Width="75" />
+                    <DataGridTextColumn Header="Price" Width="75" />
+                    <DataGridTextColumn Header="Participants" Width="125" />
+                    <DataGridTextColumn Header="Avg. price" Width="100" />
+                    <DataGridTextColumn Header="Total price" Width="100" />
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>

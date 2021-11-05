@@ -18,8 +18,9 @@
                     <MenuItem Header="Excel" />
                 </MenuItem>
                 <Separator />
-                <MenuItem Header="Close" />
-                <MenuItem Header="Close All" />
+                <MenuItem Header="Update" Command="{Binding OutputCommand}" CommandParameter="ReloadData" />
+                <MenuItem Header="Discard" />
+                <MenuItem Header="Save" />
                 <Separator />
                 <MenuItem Header="Exit" />
             </MenuItem>
@@ -28,16 +29,20 @@
                 <MenuItem Header="Undo" />
                 <MenuItem Header="Redo" />
                 <Separator />
-                <MenuItem Header="Find" />
+                <MenuItem Header="Find" Command="{Binding NavigateCommand}"
+                        CommandParameter="Find" />
                 <Separator />
-                <MenuItem Header="Settings" />
+                <MenuItem Header="Settings" Command="{Binding NavigateCommand}"
+                        CommandParameter="Settings" />
             </MenuItem>
             
             <MenuItem Header="Help">
-                <MenuItem Header="User's Docs">
-                    <MenuItem Header="About" />
+                <MenuItem Header="User Docs">
+                    <MenuItem Header="About" Command="{Binding NavigateCommand}"
+                        CommandParameter="UserDocsAbout" />
                 </MenuItem>
-                <MenuItem Header="GitHub Repository" />
+                <MenuItem Header="GitHub Repository" Command="{Binding NavigateCommand}"
+                        CommandParameter="GitHubAccount" />
             </MenuItem>
         </Menu>
     </Grid>

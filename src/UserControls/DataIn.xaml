@@ -7,28 +7,25 @@
         <StackPanel Orientation="Vertical">
             <Label Name="lblReport" Content="DATA INPUT" />
 
-            <StackPanel Orientation="Horizontal">
-                <Label Name="lblService" Content="Service:" Width="110" 
-                        Margin="5,0,0,0" />
-                <TextBox Name="tbService" Width="175" Margin="5,0,0,0" />
-            </StackPanel>
+            <uc:ServiceInput />
 
             <StackPanel Orientation="Horizontal">
-                <Label Name="lblQuantity" Content="Quantity:" Width="110" 
+                <Label Name="lblParticipants" Content="Participants:" Width="110" 
                         Margin="5,5,0,0" />
-                <TextBox Name="tbQuantity" Width="175" Margin="5,5,0,0" />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Name="lblPrice" Content="Price:" Width="110" 
+                <TextBox Name="tbParticipants" IsReadOnly="True" Width="150" 
                         Margin="5,5,0,0" />
-                <TextBox Name="tbPrice" Width="175" Margin="5,5,0,0" />
+                <Button Name="btnServiceDetails" Content="..." Width="20" 
+                        Height="25" Margin="5,5,0,0" 
+                        Command="{Binding NavigateCommand}" CommandParameter="Service" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Button Content="Add" Width="95" Height="25" Margin="5,5,0,0" />
-                <Button Content="Edit" Width="95" Height="25" Margin="5,5,0,0" />
-                <Button Content="Delete" Width="95" Height="25" Margin="5,5,0,0" />
+                <Button Content="Add" Width="95" Height="25" Margin="5,5,0,0"
+                    Command="{Binding InputCommand}" CommandParameter="Add" />
+                <Button Content="Edit" Width="95" Height="25" Margin="5,5,0,0"
+                    Command="{Binding InputCommand}" CommandParameter="Edit" />
+                <Button Content="Delete" Width="95" Height="25" Margin="5,5,0,0"
+                    Command="{Binding InputCommand}" CommandParameter="Delete" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using HcsBudget.ViewModels; 
 
 namespace HcsBudget.Views
 {
@@ -9,7 +10,22 @@ namespace HcsBudget.Views
     {
         public MainWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+
+                MainVM mainVm = new MainVM(this);
+                
+                DataContext = mainVm; 
+                this.Months.DataContext = mainVm; 
+                this.DataIn.DataContext = mainVm; 
+                this.DataOut.DataContext = mainVm; 
+                this.Report.DataContext = mainVm; 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
         }
     }
 }

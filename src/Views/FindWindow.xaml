@@ -8,7 +8,117 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="HcsBudget (for Windows): Find" 
-        MaxHeight="250" MaxWidth="500" MinHeight="250" MinWidth="500">
+        MaxHeight="455" MaxWidth="560" MinHeight="455" MinWidth="560">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="375" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <Grid Margin="5,5,5,5" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="85" />
+                <RowDefinition Height="85" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="460" />
+            </Grid.ColumnDefinitions>
+            
+            <CheckBox Content="Date" Grid.Row="0" Grid.Column="0" />
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Month" HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="from" />
+                            <ComboBox Height="25" Width="100" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                            <Label Content="to" />
+                            <ComboBox Height="25" Width="100" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="15,0,0,0">
+                    <Label Content="Year" HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="from" />
+                            <ComboBox Height="25" Width="100" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                            <Label Content="to" />
+                            <ComboBox Height="25" Width="100" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <CheckBox Content="Quantitative" Grid.Row="1" Grid.Column="0" />
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Quantity" HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="from" />
+                            <TextBox Height="25" Width="100" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                            <Label Content="to" />
+                            <TextBox Height="25" Width="100" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="15,0,0,0">
+                    <Label Content="Price" HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="from" />
+                            <TextBox Height="25" Width="100" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                            <Label Content="to" />
+                            <TextBox Height="25" Width="100" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <CheckBox Content="Services" Grid.Row="2" Grid.Column="0" />
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+                <Grid>
+                    <TreeView Name="tvServicesFrom" Height="75" Width="205" />
+                </Grid>
+                <Grid Margin="15,0,0,0">
+                    <TreeView Name="tvServicesTo" Height="75" Width="205" />
+                </Grid>
+            </StackPanel>
+
+            <CheckBox Content="Participants" Grid.Row="3" Grid.Column="0" />
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                <Grid>
+                    <TreeView Name="tvParticipantsFrom" Height="75" Width="205" />
+                </Grid>
+                <Grid Margin="15,0,0,0">
+                    <TreeView Name="tvParticipantsTo" Height="75" Width="205" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Label Content="Successfully loaded" HorizontalAlignment="Left"
+                    Margin="5,5,5,5" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                    Margin="5,5,5,5">
+                <Button Content="Find" Height="25" Width="95" />
+                <Button Content="Clear" Height="25" Width="95" Margin="5,0,0,0" />
+                <Button Content="Cancel" Height="25" Width="95" Margin="5,0,0,0" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
