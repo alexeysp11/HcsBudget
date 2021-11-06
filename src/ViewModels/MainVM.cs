@@ -38,8 +38,8 @@ namespace HcsBudget.ViewModels
         {
             try
             {
-                System.DateTime today = System.DateTime.UtcNow.Date; 
-                MonthsCollection = this.HcsDbConnection.GetMonths(today.Month, today.Year); 
+                InsertCurrentDateIntoDb();
+                MonthsCollection = this.HcsDbConnection.GetMonths(); 
                 
                 List<Month> months = MonthsCollection; 
                 this.HcsDbConnection.GetHcs(ref months); 
@@ -58,9 +58,25 @@ namespace HcsBudget.ViewModels
             }
         }
 
+        public List<int> SelectDistinctYears()
+        {
+            List<int> result = new List<int>(); 
+            try
+            {
+                this.HcsDbConnection.GetDistinctYears(ref result); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+            return result; 
+        }
+
         public void CalculateReport()
         {
-            System.Windows.MessageBox.Show("CalculateReport"); 
+            // Calculate. 
+
+            OpenReportWindow(); 
         }
 
         public void ExportReport()
@@ -75,6 +91,19 @@ namespace HcsBudget.ViewModels
         #endregion  // Data output
 
         #region Data input
+        public void InsertCurrentDateIntoDb()
+        {
+            try
+            {
+                System.DateTime today = System.DateTime.UtcNow.Date; 
+                this.HcsDbConnection.InsertCurrentDate(today.Month, today.Year);
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
         public void AddData()
         {
             System.Windows.MessageBox.Show("AddData"); 
@@ -92,6 +121,13 @@ namespace HcsBudget.ViewModels
         #endregion  // Data input
 
         #region Navigation
+        public void OpenReportWindow()
+        {
+            var win = new ReportWindow();
+            win.DataContext = this;
+            win.Show();
+        }
+
         public void OpenSettingsWindow()
         {
             var win = new SettingsWindow();

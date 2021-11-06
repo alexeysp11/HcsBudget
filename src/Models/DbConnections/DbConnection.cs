@@ -7,10 +7,8 @@ namespace HcsBudget.Models.DbConnections
 {
     public class DbConnection : BaseDbConnection, IHcsDbConnection, IStateDbConnection
     {
-        public List<Month> GetMonths(int month, int year)
+        public void InsertCurrentDate(int month, int year)
         {
-            List<Month> result = new List<Month>(); 
-
             string sqlRequest = @$"
                 INSERT INTO period (month, year) 
                 SELECT {month}, {year}
@@ -24,7 +22,22 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                sqlRequest += System.IO.File.ReadAllText("src/SQL/Months.sql"); 
+                sqlRequest = System.IO.File.ReadAllText("src/SQL/Months.sql"); 
+                GetDataTable(sqlRequest); 
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
+
+        public List<Month> GetMonths()
+        {
+            List<Month> result = new List<Month>(); 
+            try 
+            {
+                SetPathToDb(); 
+                string sqlRequest = System.IO.File.ReadAllText("src/SQL/Months.sql"); 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
@@ -67,6 +80,24 @@ namespace HcsBudget.Models.DbConnections
                             System.Convert.ToInt32(row["periodId"])
                         )); 
                     }
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
+
+        public void GetDistinctYears(ref List<int> years)
+        {
+            try 
+            {
+                SetPathToDb(); 
+                string sqlRequest = $"SELECT DISTINCT year FROM period"; 
+                DataTable dt = GetDataTable(sqlRequest); 
+                foreach(DataRow row in dt.Rows)
+                {
+                    years.Add(System.Convert.ToInt32(row["year"])); 
                 }
             }
             catch (System.Exception e)

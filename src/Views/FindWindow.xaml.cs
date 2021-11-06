@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Windows;
+using HcsBudget.ViewModels; 
 
 namespace HcsBudget.Views
 {
@@ -10,6 +12,16 @@ namespace HcsBudget.Views
         public FindWindow()
         {
             InitializeComponent();
+
+            Loaded += (o, e) => 
+            {
+                List<int> years = ((MainVM)(this.DataContext)).SelectDistinctYears(); 
+                foreach (int year in years)
+                {
+                    cbYearFrom.Items.Add(year.ToString());
+                    cbYearTo.Items.Add(year.ToString());
+                }
+            }; 
         }
     }
 }
