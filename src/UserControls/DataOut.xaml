@@ -7,7 +7,7 @@
         <ScrollViewer ScrollViewer.CanContentScroll="True" 
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <DataGrid Name="dgrCityFirm" 
+            <DataGrid Name="dgrHCS" 
                     Background="Transparent"
                     IsReadOnly="True"
                     AutoGenerateColumns="False"

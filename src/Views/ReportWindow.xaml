@@ -8,7 +8,41 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="HcsBudget (for Windows): Report" 
-        MaxHeight="250" MaxWidth="500" MinHeight="250" MinWidth="500">
+        MaxHeight="370" MaxWidth="500" MinHeight="370" MinWidth="500">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="260" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <Label Name="lblReportName" Content="FROM JANUARY 2021 TO DECEMBER 2021" 
+                HorizontalAlignment="Center" Grid.Row="0" />
+        
+        <Grid Background="Gray" Grid.Row="1">
+            <ScrollViewer ScrollViewer.CanContentScroll="True" 
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <DataGrid Name="dgrReport" 
+                        Background="Transparent"
+                        IsReadOnly="True"
+                        AutoGenerateColumns="False"
+                        HorizontalAlignment="Left">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Width="100" />
+                        <DataGridTextColumn Header="Quantity" Width="75" />
+                        <DataGridTextColumn Header="Total price" Width="100" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Grid>
+
+        <CheckBox Content="Details" IsChecked="False" HorizontalAlignment="Left" 
+                VerticalAlignment="Center" Margin="5,5,5,5" Grid.Row="2" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                Margin="5,5,5,5" Grid.Row="2">
+            <Button Content="Export" Height="25" Width="95" />
+            <Button Content="Close" Height="25" Width="95" Margin="5,0,0,0" />
+        </StackPanel>
     </Grid>
 </Window>
