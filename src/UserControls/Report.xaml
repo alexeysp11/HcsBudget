@@ -5,45 +5,85 @@
         xmlns:uc="clr-namespace:HcsBudget.UserControls"
         xmlns:vm="clr-namespace:HcsBudget.ViewModels">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="145" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Row="0">
             <Label Name="lblReport" Content="REPORT" />
 
-            <StackPanel Orientation="Horizontal">
-                <Label Name="lblNumServices" Content="Number of services:" 
-                        Width="185" Margin="5,0,0,0" />
-                <TextBox Name="tbNumServices" Width="100" IsReadOnly="True"
-                        Margin="5,0,0,0" />
-            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="55" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Name="lblTotalPrice" Content="Total price:" Width="185" 
-                        Margin="5,5,0,0" />
-                <TextBox Name="tbTotalPrice" Width="100" IsReadOnly="True"
-                        Margin="5,5,0,0" />
-            </StackPanel>
+                <Label Content="Month" HorizontalAlignment="Left" 
+                        Grid.Row="0" Grid.Column="0" />
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="from" />
+                        <ComboBox Height="25" Width="100" >
+                            <ComboBoxItem>January</ComboBoxItem>
+                            <ComboBoxItem>February</ComboBoxItem>
+                            <ComboBoxItem>March</ComboBoxItem>
+                            <ComboBoxItem>April</ComboBoxItem>
+                            <ComboBoxItem>May</ComboBoxItem>
+                            <ComboBoxItem>June</ComboBoxItem>
+                            <ComboBoxItem>July</ComboBoxItem>
+                            <ComboBoxItem>August</ComboBoxItem>
+                            <ComboBoxItem>September</ComboBoxItem>
+                            <ComboBoxItem>October</ComboBoxItem>
+                            <ComboBoxItem>November</ComboBoxItem>
+                            <ComboBoxItem>December</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                        <Label Content="to" />
+                        <ComboBox Height="25" Width="100">
+                            <ComboBoxItem>January</ComboBoxItem>
+                            <ComboBoxItem>February</ComboBoxItem>
+                            <ComboBoxItem>March</ComboBoxItem>
+                            <ComboBoxItem>April</ComboBoxItem>
+                            <ComboBoxItem>May</ComboBoxItem>
+                            <ComboBoxItem>June</ComboBoxItem>
+                            <ComboBoxItem>July</ComboBoxItem>
+                            <ComboBoxItem>August</ComboBoxItem>
+                            <ComboBoxItem>September</ComboBoxItem>
+                            <ComboBoxItem>October</ComboBoxItem>
+                            <ComboBoxItem>November</ComboBoxItem>
+                            <ComboBoxItem>December</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Name="lblNumParticipants" Content="Number of participants:" 
-                        Width="185" Margin="5,5,0,0" />
-                <TextBox Name="tbNumParticipants" Width="100" IsReadOnly="True"
-                        Margin="5,5,0,0" />
-            </StackPanel>
+                <Label Content="Year" HorizontalAlignment="Left"
+                        Grid.Row="1" Grid.Column="0" />
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="from" />
+                        <ComboBox Height="25" Width="100" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                        <Label Content="to" />
+                        <ComboBox Height="25" Width="100" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Name="lblPricePerPerson" Content="Price (1 person):" 
-                        Width="185" Margin="5,5,0,0" />
-                <TextBox Name="tbPricePerPerson" Width="100" IsReadOnly="True"
-                        Margin="5,5,0,0" />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Calculate" Width="95" Height="25" Margin="5,5,0,0"
-                        Command="{Binding OutputCommand}" CommandParameter="Calculate" />
-                <Button Content="Export" Width="95" Height="25" Margin="5,5,0,0"
-                        Command="{Binding OutputCommand}" CommandParameter="Export" />
-                <Button Content="Clear" Width="95" Height="25" Margin="5,5,0,0"
-                        Command="{Binding OutputCommand}" CommandParameter="Clear" />
-            </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Content="Calculate" Width="95" Height="25" Margin="5,5,0,0"
+                    Command="{Binding OutputCommand}" CommandParameter="Calculate" />
+            <Button Content="Export" Width="95" Height="25" Margin="5,5,0,0"
+                    Command="{Binding OutputCommand}" CommandParameter="Export" />
+            <Button Content="Clear" Width="95" Height="25" Margin="5,5,0,0"
+                    Command="{Binding OutputCommand}" CommandParameter="Clear" />
         </StackPanel>
     </Grid>
 </UserControl>

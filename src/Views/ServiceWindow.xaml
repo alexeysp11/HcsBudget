@@ -8,20 +8,28 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="HcsBudget (for Windows): Service" 
-        MaxHeight="375" MaxWidth="400" MinHeight="375" MinWidth="400">
+        MaxHeight="325" MaxWidth="460" MinHeight="325" MinWidth="460">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
-            <RowDefinition Height="265" />
+            <RowDefinition Height="215" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
         <Label Name="lblServiceDetails" Content="SERVICE DETAILS" 
                 HorizontalAlignment="Center" Grid.Row="0" />
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" 
-                Grid.Row="1">
-            <uc:ServiceInput />
-            <uc:Participants />
+        <StackPanel Orientation="Vertical" Grid.Row="1">
+            <uc:ServiceInput HorizontalAlignment="Center" />
+
+            <Label Content="Participants" Margin="10,5,5,5" />
+            <StackPanel Orientation="Horizontal" Margin="10,5,5,5">
+                <Grid>
+                    <TreeView Name="tvParticipantsFrom" Height="75" Width="205" />
+                </Grid>
+                <Grid Margin="15,0,0,0">
+                    <TreeView Name="tvParticipantsTo" Height="75" Width="205" />
+                </Grid>
+            </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                 Margin="5,5,5,5" Grid.Row="2">
