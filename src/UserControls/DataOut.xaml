@@ -11,14 +11,21 @@
                     Background="Transparent"
                     IsReadOnly="True"
                     AutoGenerateColumns="False"
-                    HorizontalAlignment="Left">
+                    HorizontalAlignment="Left"
+                    ItemsSource="{Binding HcsDataTable}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Service" Width="100" />
-                    <DataGridTextColumn Header="Quantity" Width="75" />
-                    <DataGridTextColumn Header="Price" Width="75" />
-                    <DataGridTextColumn Header="Participants" Width="125" />
-                    <DataGridTextColumn Header="Avg. price" Width="100" />
-                    <DataGridTextColumn Header="Total price" Width="100" />
+                    <DataGridTextColumn Header="Service" Width="100"
+                            Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Quantity" Width="75"
+                            Binding="{Binding Qty}" />
+                    <DataGridTextColumn Header="Price" Width="75"
+                            Binding="{Binding PriceUsd}" />
+                    <DataGridTextColumn Header="Participants" Width="125"
+                            Binding="{Binding ParticipantName}" />
+                    <DataGridTextColumn Header="Avg. price" Width="100"
+                            Binding="{Binding AvgPrice}" />
+                    <DataGridTextColumn Header="Total price" Width="100"
+                            Binding="{Binding TotalPrice}" />
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>

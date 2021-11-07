@@ -26,6 +26,9 @@ namespace HcsBudget.UserControls
             {
                 cbYearFrom.Items.Add(year.ToString());
                 cbYearTo.Items.Add(year.ToString());
+
+                cbYearFrom.SelectedIndex = 0; 
+                cbYearTo.SelectedIndex = 0; 
             }
         }
     }

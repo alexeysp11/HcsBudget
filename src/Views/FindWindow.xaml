@@ -34,7 +34,7 @@
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical">
                             <Label Content="Month" />
-                            <ComboBox Name="cbMonthFrom" Height="25" Width="125">
+                            <ComboBox Name="cbMonthFrom" SelectedIndex="0" Height="25" Width="125">
                                 <ComboBoxItem>January</ComboBoxItem>
                                 <ComboBoxItem>February</ComboBoxItem>
                                 <ComboBoxItem>March</ComboBoxItem>
@@ -61,7 +61,7 @@
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical">
                             <Label Content="Month" />
-                            <ComboBox Name="cbMonthTo" Height="25" Width="125">
+                            <ComboBox Name="cbMonthTo" SelectedIndex="11" Height="25" Width="125">
                                 <ComboBoxItem>January</ComboBoxItem>
                                 <ComboBoxItem>February</ComboBoxItem>
                                 <ComboBoxItem>March</ComboBoxItem>

@@ -1,3 +1,4 @@
+using System.Data; 
 using System.Collections.Generic; 
 using System.Windows; 
 using System.Windows.Input; 
@@ -19,7 +20,8 @@ namespace HcsBudget.ViewModels
         private IHcsDbConnection HcsDbConnection { get; set; }
         private IStateDbConnection StateDbConnection { get; set; }
 
-        private List<Month> MonthsCollection { get; set; }
+        public List<Month> MonthsCollection { get; private set; }
+        public List<Hcs> HcsCollection { get; private set; }
 
         public MainVM(MainWindow mainWindow)
         {
@@ -40,17 +42,26 @@ namespace HcsBudget.ViewModels
             {
                 InsertCurrentDateIntoDb();
                 MonthsCollection = this.HcsDbConnection.GetMonths(); 
-                
-                List<Month> months = MonthsCollection; 
-                this.HcsDbConnection.GetHcs(ref months); 
-                MonthsCollection = months; 
-                
+
                 List<string> monthNames = new List<string>(); 
                 foreach (Month month in MonthsCollection)
                 {
                     monthNames.Add(month.Label); 
                 }
                 this.MainWindow.Months.tvTalbes.ItemsSource = monthNames;
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void SelectHcs(int periodId)
+        {
+            try
+            {
+                HcsCollection = this.HcsDbConnection.GetHcs(periodId); 
+                this.MainWindow.DataOut.dgrHCS.ItemsSource = HcsCollection;
             }
             catch (System.Exception e)
             {

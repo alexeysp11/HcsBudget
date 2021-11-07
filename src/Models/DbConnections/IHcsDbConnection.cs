@@ -1,4 +1,5 @@
 using System.Collections.Generic; 
+using System.Data; 
 
 namespace HcsBudget.Models.DbConnections
 {
@@ -6,7 +7,7 @@ namespace HcsBudget.Models.DbConnections
     {
         void InsertCurrentDate(int month, int year); 
         List<Month> GetMonths();
-        void GetHcs(ref List<Month> months); 
+        List<Hcs> GetHcs(int periodId); 
         void GetDistinctYears(ref List<int> years); 
     }
 }
