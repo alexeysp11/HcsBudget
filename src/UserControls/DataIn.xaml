@@ -7,7 +7,7 @@
         <StackPanel Orientation="Vertical">
             <Label Name="lblReport" Content="DATA INPUT" />
 
-            <uc:ServiceInput />
+            <uc:ServiceInput x:Name="ServiceInput" />
 
             <StackPanel Orientation="Horizontal">
                 <Label Name="lblParticipants" Content="Participants:" Width="110" 

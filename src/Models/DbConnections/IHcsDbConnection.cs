@@ -9,5 +9,7 @@ namespace HcsBudget.Models.DbConnections
         List<Month> GetMonths();
         List<Hcs> GetHcs(int periodId); 
         void GetDistinctYears(ref List<int> years); 
+        List<string> SelectAllParticipants(); 
+        List<string> SelectAllHcs(); 
     }
 }

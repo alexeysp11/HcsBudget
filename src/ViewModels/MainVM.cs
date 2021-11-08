@@ -11,7 +11,7 @@ namespace HcsBudget.ViewModels
 {
     public class MainVM
     {
-        private MainWindow MainWindow { get; set; }
+        public MainWindow MainWindow { get; private set; }
 
         public ICommand InputCommand { get; private set; }
         public ICommand OutputCommand { get; private set; }
@@ -75,6 +75,34 @@ namespace HcsBudget.ViewModels
             try
             {
                 this.HcsDbConnection.GetDistinctYears(ref result); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+            return result; 
+        }
+
+        public List<string> LoadParticipants()
+        {
+            List<string> result = new List<string>(); 
+            try
+            {
+                result = this.HcsDbConnection.SelectAllParticipants(); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+            return result; 
+        }
+
+        public List<string> LoadHcs()
+        {
+            List<string> result = new List<string>(); 
+            try
+            {
+                result = this.HcsDbConnection.SelectAllHcs(); 
             }
             catch (System.Exception e)
             {

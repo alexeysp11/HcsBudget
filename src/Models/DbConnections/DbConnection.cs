@@ -122,5 +122,45 @@ namespace HcsBudget.Models.DbConnections
                 throw e; 
             }
         }
+
+        public List<string> SelectAllParticipants()
+        {
+            List<string> result = new List<string>();
+            try 
+            {
+                SetPathToDb(); 
+                string sqlRequest = $"SELECT name FROM participant"; 
+                DataTable dt = GetDataTable(sqlRequest); 
+                foreach(DataRow row in dt.Rows)
+                {
+                    result.Add(ToTitleCase(row["name"].ToString().ToLower())); 
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+            return result; 
+        }
+
+        public List<string> SelectAllHcs()
+        {
+            List<string> result = new List<string>();
+            try 
+            {
+                SetPathToDb(); 
+                string sqlRequest = $"SELECT name FROM hcs"; 
+                DataTable dt = GetDataTable(sqlRequest); 
+                foreach(DataRow row in dt.Rows)
+                {
+                    result.Add(ToTitleCase(row["name"].ToString().ToLower())); 
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+            return result; 
+        }
     }
 }

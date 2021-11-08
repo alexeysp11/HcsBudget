@@ -61,7 +61,7 @@
             </StackPanel>
         </StackPanel>
 
-        <uc:Participants HorizontalAlignment="Center" Grid.Row="2" />
+        <uc:Participants x:Name="Participants" HorizontalAlignment="Center" Grid.Row="2" />
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                 Margin="5,5,5,5" Grid.Row="3">

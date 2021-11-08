@@ -12,7 +12,8 @@
                     IsReadOnly="True"
                     AutoGenerateColumns="False"
                     HorizontalAlignment="Left"
-                    ItemsSource="{Binding HcsDataTable}">
+                    ItemsSource="{Binding HcsDataTable}"
+                    SelectionChanged="DataGrid_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Service" Width="100"
                             Binding="{Binding Name}" />
