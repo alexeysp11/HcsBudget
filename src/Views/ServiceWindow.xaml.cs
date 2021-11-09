@@ -22,6 +22,27 @@ namespace HcsBudget.Views
             };
         }
 
+        private void tvParticipantsFrom_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            var menuItem = tvParticipantsFrom.SelectedItem as string;
+            if (menuItem != null)
+            {
+                foreach (var item in this.tvParticipantsTo.Items)
+                {
+                    if (item == menuItem) 
+                    {
+                        return; 
+                    }
+                }
+                this.tvParticipantsTo.Items.Add(menuItem);
+            }
+        }
+
+        private void tvParticipantsTo_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            tvParticipantsTo.Items.Remove(tvParticipantsTo.SelectedItem);
+        }
+
         private void LoadParticipants()
         {
             List<string> participants = this.MainVM.LoadParticipants(); 

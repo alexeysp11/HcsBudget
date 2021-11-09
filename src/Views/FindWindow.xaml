@@ -118,20 +118,24 @@
             <CheckBox Content="Services" Grid.Row="2" Grid.Column="0" />
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
                 <Grid>
-                    <TreeView Name="tvServicesFrom" Height="75" Width="205" />
+                    <TreeView Name="tvServicesFrom" Height="75" Width="205"
+                            MouseDoubleClick="tvServicesFrom_MouseDoubleClick" />
                 </Grid>
                 <Grid Margin="15,0,0,0">
-                    <TreeView Name="tvServicesTo" Height="75" Width="205" />
+                    <TreeView Name="tvServicesTo" Height="75" Width="205"
+                            MouseDoubleClick="tvServicesTo_MouseDoubleClick" />
                 </Grid>
             </StackPanel>
 
             <CheckBox Content="Participants" Grid.Row="3" Grid.Column="0" />
             <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
                 <Grid>
-                    <TreeView Name="tvParticipantsFrom" Height="75" Width="205" />
+                    <TreeView Name="tvParticipantsFrom" Height="75" Width="205"
+                            MouseDoubleClick="tvParticipantsFrom_MouseDoubleClick" />
                 </Grid>
                 <Grid Margin="15,0,0,0">
-                    <TreeView Name="tvParticipantsTo" Height="75" Width="205" />
+                    <TreeView Name="tvParticipantsTo" Height="75" Width="205"
+                            MouseDoubleClick="tvParticipantsTo_MouseDoubleClick" />
                 </Grid>
             </StackPanel>
         </Grid>

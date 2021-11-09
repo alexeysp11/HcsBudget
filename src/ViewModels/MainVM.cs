@@ -143,6 +143,42 @@ namespace HcsBudget.ViewModels
             }
         }
 
+        public void AddParticipant(string name)
+        {
+            try
+            {
+                this.HcsDbConnection.InsertParticipant(name); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void EditParticipant(string oldName, string newName)
+        {
+            try
+            {
+                this.HcsDbConnection.UpdateParticipant(oldName, newName); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void DeleteParticipant(string name)
+        {
+            try
+            {
+                this.HcsDbConnection.DeleteParticipant(name); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
         public void AddData()
         {
             System.Windows.MessageBox.Show("AddData"); 

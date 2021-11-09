@@ -162,5 +162,67 @@ namespace HcsBudget.Models.DbConnections
             }
             return result; 
         }
+
+        public void InsertParticipant(string name)
+        {
+            string sqlRequest = @$"
+                INSERT INTO participant (name) 
+                SELECT '{name}'
+                WHERE
+                (
+                    SELECT COUNT(*)
+                    FROM participant
+                    WHERE UPPER(name) LIKE UPPER('{name}')
+                ) = 0; 
+            "; 
+            try 
+            {
+                SetPathToDb(); 
+                GetDataTable(sqlRequest); 
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
+
+        public void UpdateParticipant(string oldName, string newName)
+        {
+            string sqlRequest = @$"
+                UPDATE participant
+                SET name = '{newName}'
+                WHERE participant_id = (
+                    SELECT participant_id 
+                    FROM participant p 
+                    WHERE UPPER(name) LIKE UPPER('{oldName}')
+                ); 
+            "; 
+            try 
+            {
+                SetPathToDb(); 
+                GetDataTable(sqlRequest); 
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
+
+        public void DeleteParticipant(string name)
+        {
+            string sqlRequest = @$"
+                DELETE FROM participant 
+                WHERE UPPER(name) LIKE UPPER('{name}') 
+            "; 
+            try 
+            {
+                SetPathToDb(); 
+                GetDataTable(sqlRequest); 
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
     }
 }

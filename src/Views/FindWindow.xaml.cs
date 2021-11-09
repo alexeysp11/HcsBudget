@@ -23,6 +23,48 @@ namespace HcsBudget.Views
                 LoadServices(); 
             }; 
         }
+        
+        private void tvParticipantsFrom_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            var menuItem = tvParticipantsFrom.SelectedItem as string;
+            if (menuItem != null)
+            {
+                foreach (var item in this.tvParticipantsTo.Items)
+                {
+                    if (item == menuItem) 
+                    {
+                        return; 
+                    }
+                }
+                this.tvParticipantsTo.Items.Add(menuItem);
+            }
+        }
+
+        private void tvParticipantsTo_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            tvParticipantsTo.Items.Remove(tvParticipantsTo.SelectedItem);
+        }
+        
+        private void tvServicesFrom_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            var menuItem = tvServicesFrom.SelectedItem as string;
+            if (menuItem != null)
+            {
+                foreach (var item in this.tvServicesTo.Items)
+                {
+                    if (item == menuItem) 
+                    {
+                        return; 
+                    }
+                }
+                this.tvServicesTo.Items.Add(menuItem);
+            }
+        }
+
+        private void tvServicesTo_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            tvServicesTo.Items.Remove(tvServicesTo.SelectedItem);
+        }
 
         private void LoadYears()
         {

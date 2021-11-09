@@ -24,10 +24,12 @@
             <Label Content="Participants" Margin="10,5,5,5" />
             <StackPanel Orientation="Horizontal" Margin="10,5,5,5">
                 <Grid>
-                    <TreeView Name="tvParticipantsFrom" Height="75" Width="205" />
+                    <TreeView Name="tvParticipantsFrom" Height="75" Width="205"
+                            MouseDoubleClick="tvParticipantsFrom_MouseDoubleClick" />
                 </Grid>
                 <Grid Margin="15,0,0,0">
-                    <TreeView Name="tvParticipantsTo" Height="75" Width="205" />
+                    <TreeView Name="tvParticipantsTo" Height="75" Width="205"
+                            MouseDoubleClick="tvParticipantsTo_MouseDoubleClick" />
                 </Grid>
             </StackPanel>
         </StackPanel>

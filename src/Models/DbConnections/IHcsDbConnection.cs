@@ -6,10 +6,15 @@ namespace HcsBudget.Models.DbConnections
     public interface IHcsDbConnection 
     {
         void InsertCurrentDate(int month, int year); 
-        List<Month> GetMonths();
-        List<Hcs> GetHcs(int periodId); 
         void GetDistinctYears(ref List<int> years); 
-        List<string> SelectAllParticipants(); 
+        List<Month> GetMonths();
+
+        List<Hcs> GetHcs(int periodId); 
         List<string> SelectAllHcs(); 
+
+        List<string> SelectAllParticipants(); 
+        void InsertParticipant(string name);
+        void UpdateParticipant(string oldName, string newName); 
+        void DeleteParticipant(string name); 
     }
 }
