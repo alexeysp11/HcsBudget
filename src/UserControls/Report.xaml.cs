@@ -17,6 +17,11 @@ namespace HcsBudget.UserControls
             Loaded += (o, e) => GetYears(); 
         }
 
+        private void DefaultBtn_Clicked(object sender, System.EventArgs e)
+        {
+            SetDefaultValues(); 
+        }
+
         public void GetYears()
         {
             MainVM mainVM = (MainVM)(this.DataContext); 
@@ -26,10 +31,17 @@ namespace HcsBudget.UserControls
             {
                 cbYearFrom.Items.Add(year.ToString());
                 cbYearTo.Items.Add(year.ToString());
-
-                cbYearFrom.SelectedIndex = 0; 
-                cbYearTo.SelectedIndex = 0; 
+                SetDefaultValues(); 
             }
+        }
+
+        private void SetDefaultValues()
+        {
+            cbMonthFrom.SelectedIndex = 0; 
+            cbMonthTo.SelectedIndex = 11; 
+
+            cbYearFrom.SelectedIndex = 0; 
+            cbYearTo.SelectedIndex = 0; 
         }
     }
 }

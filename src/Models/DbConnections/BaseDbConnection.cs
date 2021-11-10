@@ -8,16 +8,46 @@ namespace HcsBudget.Models.DbConnections
     {
         private string PathToDb { get; set; } 
 
+        private string[] PathsToDbFolder = new string[] { "data/", "../../../../data/" }; 
+        private string[] PathsToSqlFolder = new string[] { "src/SQL/", "../../../SQL/" }; 
+
         protected void SetPathToDb()
         {
-            try
+            bool isPassed = false; 
+            foreach (string path in PathsToDbFolder)
             {
-                PathToDb = "data/app.db"; 
+                try
+                {
+                    PathToDb = path + "app.db"; 
+                    GetDataTable("SELECT 1"); 
+                    isPassed = true; 
+                    break; 
+                }
+                catch (System.Exception) {}
             }
-            catch (System.Exception e)
+            if (!isPassed)
             {
-                throw e; 
+                throw new System.Exception("Unable to display tables located in the database"); 
             }
+        }
+
+        protected string GetSqlRequest(string filename)
+        {
+            string sqlRequest = string.Empty; 
+            foreach (string path in PathsToSqlFolder)
+            {
+                try
+                {
+                    sqlRequest = System.IO.File.ReadAllText(path + filename); 
+                    break; 
+                }
+                catch (System.Exception) {}
+            }
+            if (sqlRequest == string.Empty)
+            {
+                throw new System.Exception("Unable to display tables located in the database"); 
+            }
+            return sqlRequest; 
         }
 
         protected DataTable GetDataTable(string sql)

@@ -36,7 +36,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                string sqlRequest = System.IO.File.ReadAllText("src/SQL/GetMonths.sql"); 
+                string sqlRequest = GetSqlRequest("GetMonths.sql"); 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
