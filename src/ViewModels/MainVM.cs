@@ -1,5 +1,6 @@
-using System.Data; 
 using System.Collections.Generic; 
+using System.Data; 
+using System.Linq; 
 using System.Windows; 
 using System.Windows.Input; 
 using HcsBudget.Views; 
@@ -221,6 +222,21 @@ namespace HcsBudget.ViewModels
         {
             var win = new ServiceWindow();
             win.DataContext = this;
+
+            var siFrom = this.MainWindow.DataIn.ServiceInput; 
+            win.ServiceInput.tbService.Text = siFrom.tbService.Text; 
+            win.ServiceInput.tbQuantity.Text = siFrom.tbQuantity.Text; 
+            win.ServiceInput.tbPrice.Text = siFrom.tbPrice.Text; 
+            
+            string participants = this.MainWindow.DataIn.tbParticipants.Text; 
+            foreach (var item in participants.Split(',').ToList())
+            {
+                if (item != string.Empty)
+                {
+                    win.tvParticipantsTo.Items.Add(item);
+                }
+            }
+
             win.Show();
         }
 

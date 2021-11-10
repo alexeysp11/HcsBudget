@@ -24,23 +24,40 @@ namespace HcsBudget.Views
 
         private void tvParticipantsFrom_MouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            var menuItem = tvParticipantsFrom.SelectedItem as string;
-            if (menuItem != null)
+            try
             {
-                foreach (var item in this.tvParticipantsTo.Items)
+                string menuItem = tvParticipantsFrom.SelectedItem as string;
+                if (menuItem != null)
                 {
-                    if (item == menuItem) 
+                    foreach (string item in this.tvParticipantsTo.Items)
                     {
-                        return; 
+                        if (item == menuItem) 
+                        {
+                            return; 
+                        }
                     }
+                    this.tvParticipantsTo.Items.Add(menuItem);
                 }
-                this.tvParticipantsTo.Items.Add(menuItem);
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception"); 
             }
         }
 
         private void tvParticipantsTo_MouseDoubleClick(object sender, RoutedEventArgs e)
         {
             tvParticipantsTo.Items.Remove(tvParticipantsTo.SelectedItem);
+        }
+
+        private void SaveBtn_Clicked(object sender, System.EventArgs e)
+        {
+            System.Windows.MessageBox.Show("SaveBtn_Clicked");
+        }
+
+        private void CancelBtn_Clicked(object sender, System.EventArgs e)
+        {
+            this.Close();
         }
 
         private void LoadParticipants()

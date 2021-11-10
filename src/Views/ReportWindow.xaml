@@ -41,8 +41,10 @@
                 VerticalAlignment="Center" Margin="5,5,5,5" Grid.Row="2" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
                 Margin="5,5,5,5" Grid.Row="2">
-            <Button Content="Export" Height="25" Width="95" />
-            <Button Content="Close" Height="25" Width="95" Margin="5,0,0,0" />
+            <Button Name="ExportBtn" Content="Export" Height="25" Width="95"
+                    Command="{Binding OutputCommand}" CommandParameter="Export" />
+            <Button Name="CloseBtn" Content="Close" Height="25" Width="95" 
+                    Margin="5,0,0,0" Click="CloseBtn_Clicked" />
         </StackPanel>
     </Grid>
 </Window>

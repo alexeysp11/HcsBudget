@@ -11,7 +11,7 @@ namespace HcsBudget.UserControls
     {
         private MainVM MainVM { get; set; }
 
-        private string CurrentParticipant { get; set; }
+        private string CurrentParticipant { get; set; } = null; 
         
         public Participants()
         {
@@ -40,14 +40,30 @@ namespace HcsBudget.UserControls
 
         private void AddBtn_Clicked(object sender, System.EventArgs e)
         {
-            this.MainVM.AddParticipant(tbParticipants.Text); 
-            LoadParticipants(); 
+            if (tbParticipants.Text != string.Empty)
+            {
+                this.MainVM.AddParticipant(tbParticipants.Text); 
+                LoadParticipants(); 
+            }
+            else
+            {
+                string msg = "Unable to add participant.\nYou need to write a new name into TextBox."; 
+                System.Windows.MessageBox.Show(msg, "Error"); 
+            }
         }
 
         private void EditBtn_Clicked(object sender, System.EventArgs e)
         {
-            this.MainVM.EditParticipant(CurrentParticipant, tbParticipants.Text); 
-            LoadParticipants(); 
+            if (CurrentParticipant != null && tbParticipants.Text != string.Empty)
+            {
+                this.MainVM.EditParticipant(CurrentParticipant, tbParticipants.Text); 
+                LoadParticipants(); 
+            }
+            else
+            {
+                string msg = "Unable to edit participant.\nYou need to select a participant in ListBox and write a new name into TextBox."; 
+                System.Windows.MessageBox.Show(msg, "Error"); 
+            }
         }
 
         private void DeleteBtn_Clicked(object sender, System.EventArgs e)
@@ -59,7 +75,7 @@ namespace HcsBudget.UserControls
             }
             else
             {
-                string msg = "Unable to delete participant\nYou should not edit participant's name in TextBox"; 
+                string msg = "Unable to delete participant.\nNames in ListBox and TextBox should be the same."; 
                 System.Windows.MessageBox.Show(msg, "Error"); 
             }
         }

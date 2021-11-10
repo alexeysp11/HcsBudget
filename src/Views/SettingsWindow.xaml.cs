@@ -23,6 +23,21 @@ namespace HcsBudget.Views
             };
         }
 
+        private void DefaultBtn_Clicked(object sender, System.EventArgs e)
+        {
+            System.Windows.MessageBox.Show("DefaultBtn_Clicked");
+        }
+
+        private void SaveBtn_Clicked(object sender, System.EventArgs e)
+        {
+            System.Windows.MessageBox.Show("SaveBtn_Clicked");
+        }
+
+        private void CancelBtn_Clicked(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }
+
         private void LoadParticipants()
         {
             List<string> participants = this.MainVM.LoadParticipants(); 

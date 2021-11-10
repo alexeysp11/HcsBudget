@@ -145,9 +145,12 @@
                     Margin="5,5,5,5" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                     Margin="5,5,5,5">
-                <Button Content="Find" Height="25" Width="95" />
-                <Button Content="Clear" Height="25" Width="95" Margin="5,0,0,0" />
-                <Button Content="Cancel" Height="25" Width="95" Margin="5,0,0,0" />
+                <Button Name="FindBtn" Content="Find" Height="25" Width="95"
+                        Click="FindBtn_Clicked" />
+                <Button Name="ClearBtn" Content="Clear" Height="25" Width="95" 
+                        Margin="5,0,0,0" Click="ClearBtn_Clicked" />
+                <Button Name="CancelBtn" Content="Cancel" Height="25" Width="95" 
+                        Margin="5,0,0,0" Click="CancelBtn_Clicked" />
             </StackPanel>
         </Grid>
     </Grid>

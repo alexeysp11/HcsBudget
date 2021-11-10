@@ -78,11 +78,9 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Content="Calculate" Width="95" Height="25" Margin="5,5,0,0"
+            <Button Content="Calculate" Width="145" Height="25" Margin="5,5,0,0"
                     Command="{Binding OutputCommand}" CommandParameter="Calculate" />
-            <Button Content="Export" Width="95" Height="25" Margin="5,5,0,0"
-                    Command="{Binding OutputCommand}" CommandParameter="Export" />
-            <Button Content="Clear" Width="95" Height="25" Margin="5,5,0,0"
+            <Button Content="Clear" Width="145" Height="25" Margin="5,5,0,0"
                     Command="{Binding OutputCommand}" CommandParameter="Clear" />
         </StackPanel>
     </Grid>

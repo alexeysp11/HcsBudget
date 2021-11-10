@@ -65,6 +65,21 @@ namespace HcsBudget.Views
         {
             tvServicesTo.Items.Remove(tvServicesTo.SelectedItem);
         }
+        
+        private void FindBtn_Clicked(object sender, System.EventArgs e)
+        {
+            System.Windows.MessageBox.Show("FindBtn_Clicked");
+        }
+
+        private void ClearBtn_Clicked(object sender, System.EventArgs e)
+        {
+            System.Windows.MessageBox.Show("ClearBtn_Clicked");
+        }
+
+        private void CancelBtn_Clicked(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }
 
         private void LoadYears()
         {

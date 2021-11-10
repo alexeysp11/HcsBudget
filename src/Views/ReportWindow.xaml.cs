@@ -11,5 +11,10 @@ namespace HcsBudget.Views
         {
             InitializeComponent();
         }
+
+        private void CloseBtn_Clicked(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
