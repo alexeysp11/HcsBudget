@@ -11,6 +11,11 @@ namespace HcsBudget.Views
     {
         private MainVM MainVM { get; set; }
 
+        private string InitUser { get; set; }
+        private string InitLanguage { get; set; }
+        private string InitCurrency { get; set; }
+        private string InitDatabase { get; set; }
+
         public SettingsWindow()
         {
             InitializeComponent();
@@ -20,6 +25,7 @@ namespace HcsBudget.Views
                 this.MainVM = ((MainVM)(this.DataContext));
                 Participants.DataContext = this.MainVM; 
                 LoadParticipants(); 
+                SaveInitialValues(); 
             };
         }
 
@@ -30,18 +36,76 @@ namespace HcsBudget.Views
 
         private void SaveBtn_Clicked(object sender, System.EventArgs e)
         {
-            System.Windows.MessageBox.Show("SaveBtn_Clicked");
+            SaveAll(); 
         }
 
         private void CancelBtn_Clicked(object sender, System.EventArgs e)
         {
-            this.Close();
+            try
+            {
+                // Also compare a list of participants
+                if (InitUser == cbUser.Text && 
+                    InitLanguage == cbLanguage.Text && 
+                    InitCurrency == cbCurrency.Text &&
+                    InitDatabase == cbDatabase.Text)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    AskToSaveOnCancel(); 
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception"); 
+            }
         }
 
         private void LoadParticipants()
         {
             List<string> participants = this.MainVM.LoadParticipants(); 
             this.Participants.tvParticipants.ItemsSource = participants; 
+        }
+
+        private void SaveInitialValues()
+        {
+            try
+            {
+                InitUser = cbUser.Text; 
+                InitLanguage = cbLanguage.Text; 
+                InitCurrency = cbCurrency.Text; 
+                InitDatabase = cbDatabase.Text; 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception");
+            }
+        }
+
+        private void AskToSaveOnCancel()
+        {
+            string msg = "Do you want to save changes?"; 
+            var result = System.Windows.MessageBox.Show(msg, "Close window", System.Windows.MessageBoxButton.YesNoCancel); 
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                // Save
+                this.Close();
+            }
+            else if (result == System.Windows.MessageBoxResult.No)
+            {
+                this.Close();
+            }
+            else
+            {
+                return; 
+            }
+        }
+
+        private void SaveAll()
+        {
+            // Load changed data to DB. 
+            SaveInitialValues();
         }
     }
 }

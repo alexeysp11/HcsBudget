@@ -11,6 +11,11 @@ namespace HcsBudget.Views
     {
         private MainVM MainVM { get; set; }
 
+        private string InitName { get; set; }
+        private float InitQuantity { get; set; }
+        private float InitPrice { get; set; }
+        private List<string> InitParticipants { get; set; }
+
         public ServiceWindow()
         {
             InitializeComponent();
@@ -19,6 +24,7 @@ namespace HcsBudget.Views
             {
                 this.MainVM = ((MainVM)(this.DataContext));
                 LoadParticipants(); 
+                SaveInitialValues(); 
             };
         }
 
@@ -52,18 +58,112 @@ namespace HcsBudget.Views
 
         private void SaveBtn_Clicked(object sender, System.EventArgs e)
         {
-            System.Windows.MessageBox.Show("SaveBtn_Clicked");
+            SaveAll(); 
         }
 
         private void CancelBtn_Clicked(object sender, System.EventArgs e)
         {
-            this.Close();
+            try
+            {
+                float qty = float.Parse(this.ServiceInput.tbQuantity.Text); 
+                float price = float.Parse(this.ServiceInput.tbPrice.Text); 
+                bool areParticipantsChanged = AreParticipantsChanged(); 
+                
+                if (InitName == this.ServiceInput.tbService.Text && 
+                    AreEqual(InitQuantity, qty, 0.009f) && 
+                    AreEqual(InitPrice, price, 0.009f) && 
+                    !areParticipantsChanged)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    AskToSaveOnCancel();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception"); 
+            }
         }
 
         private void LoadParticipants()
         {
-            List<string> participants = this.MainVM.LoadParticipants(); 
-            this.tvParticipantsFrom.ItemsSource = participants; 
+            this.tvParticipantsFrom.ItemsSource = this.MainVM.LoadParticipants(); 
+        }
+
+        private void SaveInitialValues()
+        {
+            try
+            {
+                InitName = this.ServiceInput.tbService.Text; 
+                InitQuantity = float.Parse(this.ServiceInput.tbQuantity.Text);
+                InitPrice = float.Parse(this.ServiceInput.tbPrice.Text); 
+                
+                InitParticipants = new List<string>(); 
+                foreach (var item in this.tvParticipantsTo.Items)
+                {
+                    InitParticipants.Add(item.ToString()); 
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception");
+            }
+        }
+
+        private void AskToSaveOnCancel()
+        {
+            string msg = "Do you want to save changes?"; 
+            var result = System.Windows.MessageBox.Show(msg, "Close window", System.Windows.MessageBoxButton.YesNoCancel); 
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                SaveAll(); 
+                this.Close();
+            }
+            else if (result == System.Windows.MessageBoxResult.No)
+            {
+                this.Close();
+            }
+            else
+            {
+                return; 
+            }
+        }
+
+        private void SaveAll()
+        {
+            // Load changed data to DB. 
+            SaveInitialValues();
+        }
+
+        private bool AreParticipantsChanged()
+        {
+            bool result = false; 
+            var participants = this.tvParticipantsTo.Items; 
+            int length = System.Math.Max(participants.Count, InitParticipants.Count); 
+            for (int i = 0; i < length; i++)
+            {
+                try
+                {
+                    if (InitParticipants[i] != participants[i])
+                    {
+                        result = true; 
+                        break; 
+                    }
+                }
+                catch (System.Exception)
+                {
+                    result = true; 
+                    break; 
+                }
+            }
+            return result; 
+        }
+
+        private bool AreEqual(float float1, float float2, float difference)
+        {
+            return System.Math.Abs(float1 - float2) <= difference; 
         }
     }
 }

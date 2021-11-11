@@ -24,6 +24,25 @@ namespace HcsBudget.ViewModels
         public List<Month> MonthsCollection { get; private set; }
         public List<Hcs> HcsCollection { get; private set; }
 
+        private Hcs selectedHcs; 
+        public Hcs SelectedHcs 
+        {
+            get { return selectedHcs; } 
+            set
+            {
+                selectedHcs = value; 
+                if (selectedHcs == null)
+                {
+                    this.MainWindow.DataIn.ClearAllFields(); 
+                    this.MainWindow.DataIn.DisableAllBtn(); 
+                }
+                else
+                {
+                    this.MainWindow.DataIn.EnableAllBtn(); 
+                }
+            }
+        }
+
         public MainVM(MainWindow mainWindow)
         {
             this.MainWindow = mainWindow; 
@@ -50,6 +69,8 @@ namespace HcsBudget.ViewModels
                     monthNames.Add(month.Label); 
                 }
                 this.MainWindow.Months.tvTalbes.ItemsSource = monthNames;
+
+                SelectedHcs = null;
             }
             catch (System.Exception e)
             {

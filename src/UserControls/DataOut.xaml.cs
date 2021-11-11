@@ -25,12 +25,18 @@ namespace HcsBudget.UserControls
             try
             {
                 DataGrid dg = (DataGrid)sender;
-                DataRowView selectedRow = dg.SelectedItem as DataRowView;
                 DataIn dataIn = this.MainVM.MainWindow.DataIn; 
-                dataIn.ServiceInput.tbService.Text = ((Hcs)(dg.SelectedItem)).Name.ToString(); 
-                dataIn.ServiceInput.tbQuantity.Text = ((Hcs)(dg.SelectedItem)).Qty.ToString(); 
-                dataIn.ServiceInput.tbPrice.Text = ((Hcs)(dg.SelectedItem)).PriceUsd.ToString(); 
-                dataIn.tbParticipants.Text = ((Hcs)(dg.SelectedItem)).ParticipantName.ToString(); 
+
+                Hcs selectedHcs = (Hcs)(dg.SelectedItem);
+                this.MainVM.SelectedHcs = selectedHcs;
+
+                if (selectedHcs != null)
+                {
+                    dataIn.ServiceInput.tbService.Text = selectedHcs.Name.ToString(); 
+                    dataIn.ServiceInput.tbQuantity.Text = selectedHcs.Qty.ToString(); 
+                    dataIn.ServiceInput.tbPrice.Text = selectedHcs.PriceUsd.ToString(); 
+                    dataIn.tbParticipants.Text = selectedHcs.ParticipantName.ToString(); 
+                }
             }
             catch (System.Exception ex)
             {
