@@ -82,8 +82,7 @@ namespace HcsBudget.Models.DbConnections
                     INNER JOIN participant pt ON pt.participant_id = hcsp.participant_id
                     WHERE p.period_id = {periodId}
                     GROUP BY hcs_name, qty, price_usd, total_price, month, year
-                    ORDER BY hcs_name
-                ";
+                    ORDER BY hcs_name";
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
@@ -173,8 +172,7 @@ namespace HcsBudget.Models.DbConnections
                     SELECT COUNT(*)
                     FROM participant
                     WHERE UPPER(name) LIKE UPPER('{name}')
-                ) = 0; 
-            "; 
+                ) = 0"; 
             try 
             {
                 SetPathToDb(); 
@@ -195,8 +193,7 @@ namespace HcsBudget.Models.DbConnections
                     SELECT participant_id 
                     FROM participant p 
                     WHERE UPPER(name) LIKE UPPER('{oldName}')
-                ); 
-            "; 
+                )"; 
             try 
             {
                 SetPathToDb(); 
@@ -212,11 +209,72 @@ namespace HcsBudget.Models.DbConnections
         {
             string sqlRequest = @$"
                 DELETE FROM participant 
-                WHERE UPPER(name) LIKE UPPER('{name}') 
-            "; 
+                WHERE UPPER(name) LIKE UPPER('{name}')"; 
             try 
             {
                 SetPathToDb(); 
+                GetDataTable(sqlRequest); 
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
+
+        public List<User> SelectUserSettings()
+        {
+            List<User> result = new List<User>(); 
+            try
+            {
+                SetPathToDb(); 
+                string sqlRequest = GetSqlRequest("GetSettings.sql"); 
+                DataTable dt = GetDataTable(sqlRequest); 
+                foreach(DataRow row in dt.Rows)
+                {
+                    result.Add(new User(
+                        System.Convert.ToInt32(row["user_id"]), 
+                        ToTitleCase(row["username"].ToString().ToLower()), 
+                        ToTitleCase(row["language"].ToString().ToLower()), 
+                        ToTitleCase(row["curr_name"].ToString().ToLower()), 
+                        row["curr_abbreviation"].ToString(), 
+                        ToTitleCase(row["db_name"].ToString().ToLower()), 
+                        System.Convert.ToInt32(row["is_protected"]) == 1 ? true : false, 
+                        ToTitleCase(row["password"].ToString().ToLower())
+                    )); 
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+            return result; 
+        }
+
+        public void UpdateUserSettings(int userId, string language, 
+            string currency, string database)
+        {
+            try
+            {
+                SetPathToDb(); 
+                string sqlRequest = $@"
+                    UPDATE user
+                    SET 
+                        language_id = (
+                            SELECT MIN(language_id) 
+                            FROM language 
+                            WHERE UPPER(name) LIKE UPPER('{language}')
+                        ), 
+                        currency_id = (
+                            SELECT MIN(currency_id) 
+                            FROM currency 
+                            WHERE UPPER(abbreviation) LIKE UPPER('{currency}')
+                        ), 
+                        database_id = (
+                            SELECT MIN(database_id) 
+                            FROM database 
+                            WHERE UPPER(name) LIKE UPPER('{database}')
+                        )
+                    WHERE user_id = {userId}"; 
                 GetDataTable(sqlRequest); 
             }
             catch (System.Exception e)

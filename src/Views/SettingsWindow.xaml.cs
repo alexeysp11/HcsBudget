@@ -24,6 +24,7 @@ namespace HcsBudget.Views
             {
                 this.MainVM = ((MainVM)(this.DataContext));
                 Participants.DataContext = this.MainVM; 
+                LoadUserSettings(); 
                 LoadParticipants(); 
                 SaveInitialValues(); 
             };
@@ -31,7 +32,7 @@ namespace HcsBudget.Views
 
         private void DefaultBtn_Clicked(object sender, System.EventArgs e)
         {
-            System.Windows.MessageBox.Show("DefaultBtn_Clicked");
+            SetDefaultValues(); 
         }
 
         private void SaveBtn_Clicked(object sender, System.EventArgs e)
@@ -62,6 +63,11 @@ namespace HcsBudget.Views
             }
         }
 
+        private void cbUser_DropDownClosed(object sender, System.EventArgs e)
+        {
+            SetValuesForSelectedUser(); 
+        }
+
         private void LoadParticipants()
         {
             List<string> participants = this.MainVM.LoadParticipants(); 
@@ -89,7 +95,7 @@ namespace HcsBudget.Views
             var result = System.Windows.MessageBox.Show(msg, "Close window", System.Windows.MessageBoxButton.YesNoCancel); 
             if (result == System.Windows.MessageBoxResult.Yes)
             {
-                // Save
+                SaveAll(); 
                 this.Close();
             }
             else if (result == System.Windows.MessageBoxResult.No)
@@ -104,8 +110,68 @@ namespace HcsBudget.Views
 
         private void SaveAll()
         {
-            // Load changed data to DB. 
+            UpdateUserSettings(); 
+            LoadUserSettings(); 
             SaveInitialValues();
+        }
+
+        private void LoadUserSettings()
+        {
+            this.MainVM.LoadUserSettings(); 
+            SetValuesForSelectedUser(); 
+        }
+
+        private void SetDefaultValues()
+        {
+            cbUser.Text = "Guest"; 
+            cbLanguage.Text = "English"; 
+            cbCurrency.Text = "USD"; 
+            cbDatabase.Text = "Application"; 
+        }
+
+        private void UpdateUserSettings()
+        {
+            try
+            {
+                foreach (var user in this.MainVM.Users)
+                {
+                    if (user.Name == cbUser.Text)
+                    {
+                        this.MainVM.UpdateUserSettings(user.UserId, cbLanguage.Text, 
+                            cbCurrency.Text, cbDatabase.Text); 
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        private void SetValuesForSelectedUser()
+        {
+            try
+            {
+                foreach (var user in this.MainVM.Users)
+                {
+                    if (user.Name == cbUser.Text)
+                    {
+                        if (user.Name == "Administrator")
+                        {
+                            System.Windows.MessageBox.Show("Unable to connect to database: access is restricted", "Error"); 
+                            SetDefaultValues(); 
+                            break; 
+                        }
+                        cbLanguage.Text = user.Language; 
+                        cbCurrency.Text = user.CurrAbbreviation; 
+                        cbDatabase.Text = user.Database; 
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
         }
     }
 }

@@ -23,7 +23,8 @@
                 VerticalAlignment="Top" Margin="5,5,5,5" Grid.Row="1">
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                 <Label Content="User:" Width="100" />
-                <ComboBox Name="cbUser" Width="150" SelectedIndex="1">
+                <ComboBox Name="cbUser" Width="150" SelectedIndex="1"
+                        DropDownClosed="cbUser_DropDownClosed">
                     <ComboBoxItem Name="cbiAdmin">Administrator</ComboBoxItem>
                     <ComboBoxItem Name="cbiGuest">Guest</ComboBoxItem>
                 </ComboBox>

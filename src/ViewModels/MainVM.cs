@@ -23,6 +23,7 @@ namespace HcsBudget.ViewModels
 
         public List<Month> MonthsCollection { get; private set; }
         public List<Hcs> HcsCollection { get; private set; }
+        public List<User> Users { get; private set; } 
 
         private Hcs selectedHcs; 
         public Hcs SelectedHcs 
@@ -149,6 +150,18 @@ namespace HcsBudget.ViewModels
         {
             System.Windows.MessageBox.Show("ClearReport"); 
         }
+
+        public void LoadUserSettings()
+        {
+            try
+            {
+                Users = this.HcsDbConnection.SelectUserSettings(); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
         #endregion  // Data output
 
         #region Data input
@@ -194,6 +207,19 @@ namespace HcsBudget.ViewModels
             try
             {
                 this.HcsDbConnection.DeleteParticipant(name); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void UpdateUserSettings(int userId, string language, 
+            string currency, string database)
+        {
+            try
+            {
+                this.HcsDbConnection.UpdateUserSettings(userId, language, currency, database); 
             }
             catch (System.Exception e)
             {
