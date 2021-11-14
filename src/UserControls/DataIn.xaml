@@ -22,13 +22,13 @@
             <StackPanel Orientation="Horizontal">
                 <Button Name="btnAdd" Content="Add" Width="95" Height="25" 
                     Margin="5,5,0,0" IsEnabled="False"
-                    Command="{Binding InputCommand}" CommandParameter="Add" />
+                    Command="{Binding InputCommand}" CommandParameter="AddService" />
                 <Button Name="btnEdit" Content="Edit" Width="95" Height="25" 
                     Margin="5,5,0,0" IsEnabled="False"
-                    Command="{Binding InputCommand}" CommandParameter="Edit" />
+                    Command="{Binding InputCommand}" CommandParameter="EditService" />
                 <Button Name="btnDelete" Content="Delete" Width="95" Height="25" 
                     Margin="5,5,0,0" IsEnabled="False"
-                    Command="{Binding InputCommand}" CommandParameter="Delete" />
+                    Command="{Binding InputCommand}" CommandParameter="DeleteService" />
             </StackPanel>
         </StackPanel>
     </Grid>

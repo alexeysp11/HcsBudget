@@ -158,7 +158,8 @@ namespace HcsBudget.Views
                     {
                         if (user.Name == "Administrator")
                         {
-                            System.Windows.MessageBox.Show("Unable to connect to database: access is restricted", "Error"); 
+                            string msg = "Unable to connect to database: access is restricted.\nALL OPTIONS WILL BE SET TO DEFAULT."; 
+                            System.Windows.MessageBox.Show(msg, "Error"); 
                             SetDefaultValues(); 
                             break; 
                         }

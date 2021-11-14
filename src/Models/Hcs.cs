@@ -2,19 +2,26 @@ namespace HcsBudget.Models
 {
     public class Hcs 
     {
-        public int HcsId { get; private set; }
-        public string Name { get; private set; }
-        public float Qty { get; private set; }
-        public float PriceUsd { get; private set; }
-        public string ParticipantName { get; private set; }
-        public float TotalPrice { get; private set; }
-        public int Month { get; private set; }
-        public int Year { get; private set; }
-        public int PeriodId { get; private set; }
+        public int HcsId { get; set; }
+        public string Name { get; set; }
+        public float Qty { get; set; }
+        public float PriceUsd { get; set; }
+        public string ParticipantName { get; set; }
+        public float TotalPrice { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public int PeriodId { get; set; }
 
-        public Hcs(string name, float qty, float priceUsd, 
-            string participantName, float totalPrice, int month, int year)
+        public Hcs(int periodId)
         {
+            PeriodId = periodId; 
+        }
+
+        public Hcs(int hcsId, string name, float qty, float priceUsd, 
+            string participantName, float totalPrice, int month, int year, 
+            int periodId)
+        {
+            HcsId = hcsId; 
             Name = name; 
             Qty = qty; 
             PriceUsd = priceUsd; 
@@ -22,6 +29,7 @@ namespace HcsBudget.Models
             TotalPrice = totalPrice; 
             Month = month; 
             Year = year; 
+            PeriodId = periodId; 
         }
     }
 }

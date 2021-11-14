@@ -10,7 +10,7 @@
         <StackPanel Orientation="Vertical">
             <Label Name="lblMonths" Content="MONTHS" />
             <Grid>
-                <TreeView Name="tvTalbes" Height="305" Width="150" 
+                <TreeView Name="tvMonths" Height="305" Width="150" 
                         SelectedItemChanged="SelectionChanged" />
             </Grid>
             <Button Content="Update" Width="140" Height="25" Margin="5,5,5,5"

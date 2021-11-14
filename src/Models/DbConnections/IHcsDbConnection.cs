@@ -11,6 +11,11 @@ namespace HcsBudget.Models.DbConnections
 
         List<Hcs> GetHcs(int periodId); 
         List<string> SelectAllHcs(); 
+        void InsertHcs(int periodId, string hcsName, float qty, float price, 
+            List<string> newParticipants); 
+        void UpdateHcs(int hcsId, string hcsName, float qty, float price, 
+            List<string> oldParticipants, List<string> newParticipants); 
+        void DeleteHcs(int hcsId); 
 
         List<string> SelectAllParticipants(); 
         void InsertParticipant(string name);

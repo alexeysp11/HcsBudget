@@ -21,17 +21,17 @@ namespace HcsBudget.Commands
         public void Execute(object parameter)
         {
             string parameterString = parameter as string; 
-            if (parameterString == "Add")
+            if (parameterString == "AddService")
             {
-                this.MainVM.AddData(); 
+                this.MainVM.AddService(); 
             }
-            else if (parameterString == "Edit")
+            else if (parameterString == "EditService")
             {
-                this.MainVM.EditData(); 
+                this.MainVM.EditService(); 
             }
-            else if (parameterString == "Delete")
+            else if (parameterString == "DeleteService")
             {
-                this.MainVM.DeleteData(); 
+                this.MainVM.DeleteService(); 
             }
             else
             {

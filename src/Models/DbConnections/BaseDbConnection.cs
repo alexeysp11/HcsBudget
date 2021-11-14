@@ -75,6 +75,11 @@ namespace HcsBudget.Models.DbConnections
             }
         }
 
+        protected void ExecuteSql(string sql)
+        {
+            GetDataTable(sql); 
+        }
+
         protected string ToTitleCase(string s)
         {
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower()); 

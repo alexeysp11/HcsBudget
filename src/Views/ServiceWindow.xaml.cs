@@ -133,8 +133,8 @@ namespace HcsBudget.Views
 
         private void SaveAll()
         {
-            // Load changed data to DB. 
             SaveInitialValues();
+            LoadValueToDataIn(); 
         }
 
         private bool AreParticipantsChanged()
@@ -159,6 +159,38 @@ namespace HcsBudget.Views
                 }
             }
             return result; 
+        }
+
+        private void LoadValueToDataIn()
+        {
+            try
+            {
+                var dataIn = this.MainVM.MainWindow.DataIn; 
+                dataIn.ServiceInput.tbService.Text = ServiceInput.tbService.Text; 
+                dataIn.ServiceInput.tbQuantity.Text = (System.Convert.ToSingle(ServiceInput.tbQuantity.Text)).ToString(); 
+                dataIn.ServiceInput.tbPrice.Text = (System.Convert.ToSingle(ServiceInput.tbPrice.Text)).ToString(); 
+                int i = 0; 
+                foreach (var item in tvParticipantsTo.Items)
+                {
+                    if (i == 0)
+                    {
+                        dataIn.tbParticipants.Text = item.ToString();
+                    }
+                    else
+                    {
+                        dataIn.tbParticipants.Text += "," + item.ToString(); 
+                    }
+                    i += 1; 
+                }
+                if (tvParticipantsTo.Items.Count == 0)
+                {
+                    dataIn.tbParticipants.Text = string.Empty; 
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
         }
 
         private bool AreEqual(float float1, float float2, float difference)

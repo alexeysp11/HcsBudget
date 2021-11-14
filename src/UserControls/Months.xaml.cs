@@ -28,6 +28,7 @@ namespace HcsBudget.UserControls
                     if (month.Label == selectedMonth)
                     {
                         this.MainVM.SelectHcs(month.PeriodId); 
+                        this.MainVM.SelectedHcs = new HcsBudget.Models.Hcs(month.PeriodId); 
                         break; 
                     }
                 }

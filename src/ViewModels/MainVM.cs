@@ -69,9 +69,8 @@ namespace HcsBudget.ViewModels
                 {
                     monthNames.Add(month.Label); 
                 }
-                this.MainWindow.Months.tvTalbes.ItemsSource = monthNames;
-
-                SelectedHcs = null;
+                this.MainWindow.Months.tvMonths.ItemsSource = monthNames;
+                SelectedHcs = null; 
             }
             catch (System.Exception e)
             {
@@ -227,19 +226,86 @@ namespace HcsBudget.ViewModels
             }
         }
 
-        public void AddData()
+        public void AddService()
         {
-            System.Windows.MessageBox.Show("AddData"); 
+            try
+            {
+                List<string> newParticipantsList = new List<string>(); 
+                string participants = this.MainWindow.DataIn.tbParticipants.Text; 
+                foreach (var item in participants.Split(',').ToList())
+                {
+                    if (item != string.Empty)
+                    {
+                        newParticipantsList.Add(item);
+                    }
+                }
+
+                var dataIn = this.MainWindow.DataIn; 
+                this.HcsDbConnection.InsertHcs(this.SelectedHcs.PeriodId,
+                    dataIn.ServiceInput.tbService.Text, 
+                    System.Convert.ToSingle(dataIn.ServiceInput.tbQuantity.Text), 
+                    System.Convert.ToSingle(dataIn.ServiceInput.tbPrice.Text), 
+                    newParticipantsList
+                );
+                SelectHcs(this.SelectedHcs.PeriodId); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
         }
 
-        public void EditData()
+        public void EditService()
         {
-            System.Windows.MessageBox.Show("EditData"); 
+            try
+            {
+                List<string> newParticipantsList = new List<string>(); 
+                string participants = this.MainWindow.DataIn.tbParticipants.Text; 
+                foreach (var item in participants.Split(',').ToList())
+                {
+                    if (item != string.Empty)
+                    {
+                        newParticipantsList.Add(item);
+                    }
+                }
+
+                List<string> oldParticipantsList = new List<string>(); 
+                participants = this.SelectedHcs.ParticipantName; 
+                foreach (var item in participants.Split(',').ToList())
+                {
+                    if (item != string.Empty)
+                    {
+                        oldParticipantsList.Add(item);
+                    }
+                }
+
+                var dataIn = this.MainWindow.DataIn; 
+                this.HcsDbConnection.UpdateHcs(this.SelectedHcs.HcsId,
+                    dataIn.ServiceInput.tbService.Text, 
+                    System.Convert.ToSingle(dataIn.ServiceInput.tbQuantity.Text), 
+                    System.Convert.ToSingle(dataIn.ServiceInput.tbPrice.Text), 
+                    oldParticipantsList,
+                    newParticipantsList
+                );
+                SelectHcs(this.SelectedHcs.PeriodId); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
         }
 
-        public void DeleteData()
+        public void DeleteService()
         {
-            System.Windows.MessageBox.Show("DeleteData"); 
+            try
+            {
+                this.HcsDbConnection.DeleteHcs(this.SelectedHcs.HcsId);
+                SelectHcs(this.SelectedHcs.PeriodId); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
         }
         #endregion  // Data input
 
@@ -272,9 +338,16 @@ namespace HcsBudget.ViewModels
 
             var siFrom = this.MainWindow.DataIn.ServiceInput; 
             win.ServiceInput.tbService.Text = siFrom.tbService.Text; 
-            win.ServiceInput.tbQuantity.Text = siFrom.tbQuantity.Text; 
-            win.ServiceInput.tbPrice.Text = siFrom.tbPrice.Text; 
-            
+            try
+            {
+                win.ServiceInput.tbQuantity.Text = (System.Convert.ToSingle(siFrom.tbQuantity.Text)).ToString(); 
+                win.ServiceInput.tbPrice.Text = (System.Convert.ToSingle(siFrom.tbPrice.Text)).ToString(); 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception");
+                return;
+            }
             string participants = this.MainWindow.DataIn.tbParticipants.Text; 
             foreach (var item in participants.Split(',').ToList())
             {
@@ -283,7 +356,6 @@ namespace HcsBudget.ViewModels
                     win.tvParticipantsTo.Items.Add(item);
                 }
             }
-
             win.Show();
         }
 

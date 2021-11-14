@@ -1,5 +1,6 @@
 using System.Collections.Generic; 
 using System.Data; 
+using System.Globalization; 
 using HcsBudget.Models; 
 using HcsBudget.ViewModels; 
 
@@ -22,7 +23,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                GetDataTable(sqlRequest); 
+                ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
             {
@@ -69,31 +70,37 @@ namespace HcsBudget.Models.DbConnections
                 SetPathToDb(); 
                 string sqlRequest = @$"
                     SELECT 
+                        hcs.hcs_id, 
                         hcs.name AS hcs_name, 
                         hcs.qty, 
                         hcs.price_usd, 
                         GROUP_CONCAT(pt.name) AS participant_name, 
                         hcs.qty * hcs.price_usd AS total_price, 
                         p.month, 
-                        p.year
+                        p.year, 
+                        p.period_id
                     FROM hcs
                     INNER JOIN period p ON p.period_id = hcs.period_id
-                    INNER JOIN hcs_participant hcsp ON hcsp.hcs_id = hcs.hcs_id
-                    INNER JOIN participant pt ON pt.participant_id = hcsp.participant_id
+                    LEFT JOIN hcs_participant hcsp ON hcsp.hcs_id = hcs.hcs_id
+                    LEFT JOIN participant pt ON pt.participant_id = hcsp.participant_id
                     WHERE p.period_id = {periodId}
-                    GROUP BY hcs_name, qty, price_usd, total_price, month, year
+                    GROUP BY 
+                        hcs.hcs_id, hcs_name, qty, price_usd, total_price, month, 
+                        year, p.period_id
                     ORDER BY hcs_name";
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
                     result.Add(new Hcs(
+                        System.Convert.ToInt32(row["hcs_id"]), 
                         ToTitleCase(row["hcs_name"].ToString().ToLower()),
                         System.Convert.ToSingle(row["qty"]), 
                         System.Convert.ToSingle(row["price_usd"]), 
                         ToTitleCase(row["participant_name"].ToString().ToLower()),
                         System.Convert.ToSingle(row["total_price"]), 
                         System.Convert.ToInt32(row["month"]), 
-                        System.Convert.ToInt32(row["year"])
+                        System.Convert.ToInt32(row["year"]), 
+                        System.Convert.ToInt32(row["period_id"])
                     )); 
                 }
             }
@@ -102,6 +109,136 @@ namespace HcsBudget.Models.DbConnections
                 throw e; 
             }
             return result; 
+        }
+        public void InsertHcs(int periodId, string hcsName, float qty, float price, 
+            List<string> newParticipants)
+        {
+            try 
+            {
+                SetPathToDb(); 
+                string sqlRequest = @$"
+                    INSERT INTO hcs (name, qty, price_usd, period_id)
+                    VALUES (
+                        '{hcsName}', 
+                        {qty.ToString(new CultureInfo("en-US"))}, 
+                        {price.ToString(new CultureInfo("en-US"))}, 
+                        {periodId}
+                    )"; 
+                ExecuteSql(sqlRequest); 
+                foreach (string item in newParticipants)
+                {
+                    InsertParticipant(item); 
+                    sqlRequest = @$"
+                    INSERT INTO hcs_participant (hcs_id, participant_id)
+                    VALUES (
+                        (SELECT MAX(hcs_id) FROM hcs), 
+                        (
+                            SELECT MIN(participant_id) 
+                            FROM participant 
+                            WHERE UPPER(name) LIKE UPPER('{item}')
+                        )
+                    )"; 
+                    ExecuteSql(sqlRequest); 
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
+
+        public void UpdateHcs(int hcsId, string hcsName, float qty, float price, 
+            List<string> oldParticipants, List<string> newParticipants)
+        {
+            try 
+            {
+                SetPathToDb(); 
+
+                // Update hcs table
+                string sqlRequest = @$"
+                    UPDATE hcs
+                    SET 
+                        name = '{hcsName}', 
+                        qty = {qty.ToString(new CultureInfo("en-US"))}, 
+                        price_usd = {price.ToString(new CultureInfo("en-US"))}
+                    WHERE hcs_id = {hcsId}"; 
+                ExecuteSql(sqlRequest); 
+
+                // Update hcs_participant table
+                int minLength = System.Math.Min(oldParticipants.Count, newParticipants.Count); 
+                for (int i = 0; i < minLength; i++)
+                {
+                    sqlRequest = @$"
+                        UPDATE hcs_participant
+                        SET participant_id = (
+                            SELECT MIN(participant_id) 
+                            FROM participant
+                            WHERE UPPER(name) LIKE UPPER('{newParticipants[i]}')
+                        )
+                        WHERE hcs_participant_id = (
+                            SELECT MIN(hcs_participant_id)
+                            FROM hcs_participant
+                            WHERE hcs_id = {hcsId} AND participant_id = (
+                                SELECT MIN(participant_id) 
+                                FROM participant
+                                WHERE UPPER(name) LIKE UPPER('{oldParticipants[i]}')
+                            )
+                        )"; 
+                    ExecuteSql(sqlRequest); 
+                }
+                if (minLength < newParticipants.Count)
+                {
+                    for (int i = minLength; i < newParticipants.Count; i++)
+                    {
+                        sqlRequest = $@"
+                            INSERT INTO hcs_participant (hcs_id, participant_id)
+                            VALUES ({hcsId}, (
+                                SELECT participant_id 
+                                FROM participant 
+                                WHERE UPPER(name) LIKE UPPER('{newParticipants[i]}')
+                            ))";
+                        ExecuteSql(sqlRequest); 
+                    }
+                }
+                else if (minLength < oldParticipants.Count)
+                {
+                    for (int i = minLength; i < oldParticipants.Count; i++)
+                    {
+                        sqlRequest = $@"
+                            DELETE FROM hcs_participant 
+                            WHERE hcs_participant_id = (
+                                SELECT MIN(hcs_participant_id)
+                                FROM hcs_participant
+                                WHERE hcs_id = {hcsId} AND participant_id = (
+                                    SELECT MIN(participant_id) 
+                                    FROM participant
+                                    WHERE UPPER(name) LIKE UPPER('{oldParticipants[i]}')
+                                )
+                            )";
+                        ExecuteSql(sqlRequest); 
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
+        }
+
+        public void DeleteHcs(int hcsId)
+        {
+            try 
+            {
+                SetPathToDb(); 
+                string sqlRequest = @$"
+                    DELETE FROM hcs_participant WHERE hcs_id = {hcsId};
+                    DELETE FROM hcs WHERE hcs_id = {hcsId}; "; 
+                ExecuteSql(sqlRequest); 
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
         }
 
         public void GetDistinctYears(ref List<int> years)
@@ -176,7 +313,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                GetDataTable(sqlRequest); 
+                ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
             {
@@ -197,7 +334,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                GetDataTable(sqlRequest); 
+                ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
             {
@@ -213,7 +350,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                GetDataTable(sqlRequest); 
+                ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
             {
@@ -275,7 +412,7 @@ namespace HcsBudget.Models.DbConnections
                             WHERE UPPER(name) LIKE UPPER('{database}')
                         )
                     WHERE user_id = {userId}"; 
-                GetDataTable(sqlRequest); 
+                ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
             {
