@@ -80,7 +80,8 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Name="DefaultBtn" Content="Default" Width="145" Height="25" 
                     Margin="5,5,0,0" Click="DefaultBtn_Clicked" />
-            <Button Content="Calculate" Width="145" Height="25" Margin="5,5,0,0"
+            <Button Name="CalculateBtn" Content="Calculate" Width="145" Height="25" 
+                    Margin="5,5,0,0" 
                     Command="{Binding OutputCommand}" CommandParameter="Calculate" />
         </StackPanel>
     </Grid>

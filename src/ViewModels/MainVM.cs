@@ -24,6 +24,7 @@ namespace HcsBudget.ViewModels
         public List<Month> MonthsCollection { get; private set; }
         public List<Hcs> HcsCollection { get; private set; }
         public List<User> Users { get; private set; } 
+        public List<ReportRow> FinalReport { get; private set; } 
 
         private Hcs selectedHcs; 
         public Hcs SelectedHcs 
@@ -135,8 +136,13 @@ namespace HcsBudget.ViewModels
 
         public void CalculateReport()
         {
-            // Calculate. 
+            int monthFrom = 1; 
+            int yearFrom = 2021; 
+            int monthTo = 12; 
+            int yearTo = 2021; 
 
+            this.FinalReport = this.HcsDbConnection.GetReport(monthFrom, yearFrom, 
+                monthTo, yearTo); 
             OpenReportWindow(); 
         }
 
@@ -315,6 +321,12 @@ namespace HcsBudget.ViewModels
             var win = new ReportWindow();
             win.DataContext = this;
             win.Show();
+
+            string sFrom = $"{this.MainWindow.Report.cbMonthFrom.Text.ToUpper()} {this.MainWindow.Report.cbYearFrom.Text}"; 
+            string sTo = $"{this.MainWindow.Report.cbMonthTo.Text.ToUpper()} {this.MainWindow.Report.cbYearTo.Text}"; 
+            win.lblReportName.Content = $"FROM {sFrom} TO {sTo}"; 
+
+            win.dgrReport.ItemsSource = this.FinalReport; 
         }
 
         public void OpenSettingsWindow()

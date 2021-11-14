@@ -25,5 +25,7 @@ namespace HcsBudget.Models.DbConnections
         List<User> SelectUserSettings(); 
         void UpdateUserSettings(int userId, string language, 
             string currency, string database); 
+
+        List<ReportRow> GetReport(int monthFrom, int yearFrom, int monthTo, int yearTo); 
     }
 }

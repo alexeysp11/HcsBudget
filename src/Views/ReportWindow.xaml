@@ -27,11 +27,15 @@
                         Background="Transparent"
                         IsReadOnly="True"
                         AutoGenerateColumns="False"
-                        HorizontalAlignment="Left">
+                        HorizontalAlignment="Left"
+                        ItemsSource="{Binding FinalReport}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Width="100" />
-                        <DataGridTextColumn Header="Quantity" Width="75" />
-                        <DataGridTextColumn Header="Total price" Width="100" />
+                        <DataGridTextColumn Header="Participant" Width="100"
+                                Binding="{Binding ParticipantName}" />
+                        <DataGridTextColumn Header="Quantity" Width="75"
+                                Binding="{Binding Qty}" />
+                        <DataGridTextColumn Header="Total price" Width="100"
+                                Binding="{Binding PriceUsd}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
