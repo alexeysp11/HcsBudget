@@ -10,19 +10,11 @@ namespace HcsBudget.Models.DbConnections
     {
         public void InsertCurrentDate(int month, int year)
         {
-            string sqlRequest = @$"
-                INSERT INTO period (month, year) 
-                SELECT {month}, {year}
-                WHERE
-                (
-                    SELECT COUNT(*)
-                    FROM period
-                    WHERE month = {month} AND year = {year}
-                ) = 0; 
-            "; 
             try 
             {
                 SetPathToDb(); 
+                string sqlRequest = string.Format(GetSqlRequest("InsertCurrentDate.sql"), 
+                    month, year); 
                 ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
@@ -68,26 +60,8 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                string sqlRequest = @$"
-                    SELECT 
-                        hcs.hcs_id, 
-                        hcs.name AS hcs_name, 
-                        hcs.qty, 
-                        hcs.price_usd, 
-                        GROUP_CONCAT(pt.name) AS participant_name, 
-                        hcs.qty * hcs.price_usd AS total_price, 
-                        p.month, 
-                        p.year, 
-                        p.period_id
-                    FROM hcs
-                    INNER JOIN period p ON p.period_id = hcs.period_id
-                    LEFT JOIN hcs_participant hcsp ON hcsp.hcs_id = hcs.hcs_id
-                    LEFT JOIN participant pt ON pt.participant_id = hcsp.participant_id
-                    WHERE p.period_id = {periodId}
-                    GROUP BY 
-                        hcs.hcs_id, hcs_name, qty, price_usd, total_price, month, 
-                        year, p.period_id
-                    ORDER BY hcs_name";
+                string sqlRequest = string.Format(GetSqlRequest("GetHcs.sql"), 
+                    periodId); 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
@@ -246,7 +220,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                string sqlRequest = $"SELECT DISTINCT year FROM period"; 
+                string sqlRequest = "SELECT DISTINCT year FROM period"; 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
@@ -265,7 +239,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                string sqlRequest = $"SELECT name FROM participant"; 
+                string sqlRequest = "SELECT name FROM participant"; 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
@@ -285,7 +259,7 @@ namespace HcsBudget.Models.DbConnections
             try 
             {
                 SetPathToDb(); 
-                string sqlRequest = $"SELECT name FROM hcs"; 
+                string sqlRequest = "SELECT name FROM hcs"; 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
@@ -301,18 +275,11 @@ namespace HcsBudget.Models.DbConnections
 
         public void InsertParticipant(string name)
         {
-            string sqlRequest = @$"
-                INSERT INTO participant (name) 
-                SELECT '{name}'
-                WHERE
-                (
-                    SELECT COUNT(*)
-                    FROM participant
-                    WHERE UPPER(name) LIKE UPPER('{name}')
-                ) = 0"; 
             try 
             {
                 SetPathToDb(); 
+                string sqlRequest = string.Format(GetSqlRequest("InsertParticipant.sql"), 
+                    name); 
                 ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
@@ -323,17 +290,11 @@ namespace HcsBudget.Models.DbConnections
 
         public void UpdateParticipant(string oldName, string newName)
         {
-            string sqlRequest = @$"
-                UPDATE participant
-                SET name = '{newName}'
-                WHERE participant_id = (
-                    SELECT participant_id 
-                    FROM participant p 
-                    WHERE UPPER(name) LIKE UPPER('{oldName}')
-                )"; 
             try 
             {
                 SetPathToDb(); 
+                string sqlRequest = string.Format(GetSqlRequest("UpdateParticipant.sql"), 
+                    newName, oldName); 
                 ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
@@ -364,7 +325,7 @@ namespace HcsBudget.Models.DbConnections
             try
             {
                 SetPathToDb(); 
-                string sqlRequest = GetSqlRequest("GetSettings.sql"); 
+                string sqlRequest = GetSqlRequest("SelectUserSettings.sql"); 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {
@@ -393,25 +354,8 @@ namespace HcsBudget.Models.DbConnections
             try
             {
                 SetPathToDb(); 
-                string sqlRequest = $@"
-                    UPDATE user
-                    SET 
-                        language_id = (
-                            SELECT MIN(language_id) 
-                            FROM language 
-                            WHERE UPPER(name) LIKE UPPER('{language}')
-                        ), 
-                        currency_id = (
-                            SELECT MIN(currency_id) 
-                            FROM currency 
-                            WHERE UPPER(abbreviation) LIKE UPPER('{currency}')
-                        ), 
-                        database_id = (
-                            SELECT MIN(database_id) 
-                            FROM database 
-                            WHERE UPPER(name) LIKE UPPER('{database}')
-                        )
-                    WHERE user_id = {userId}"; 
+                string sqlRequest = string.Format(GetSqlRequest("UpdateUserSettings.sql"), 
+                    language, currency, database, userId); 
                 ExecuteSql(sqlRequest); 
             }
             catch (System.Exception e)
@@ -426,28 +370,8 @@ namespace HcsBudget.Models.DbConnections
             try
             {
                 SetPathToDb(); 
-                string sqlRequest = $@"
-                    SELECT 
-                        t.p_name, 
-                        SUM(t.hcs_qty) AS hcs_qty, 
-                        SUM(t.hcs_price_usd) AS hcs_price_usd
-                    FROM 
-                    (
-                        SELECT 
-                            hcs.name AS hcs_name, 
-                            COALESCE(hcs.qty, 0) AS hcs_qty,
-                            COALESCE(hcs.price_usd, 0) AS hcs_price_usd, 
-                            p.name AS p_name
-                        FROM hcs 
-                        INNER JOIN hcs_participant hcsp ON hcs.hcs_id = hcsp.hcs_id
-                        LEFT JOIN participant p ON p.participant_id = hcsp.participant_id
-                        INNER JOIN period pd ON pd.period_id = hcs.period_id
-                        WHERE 
-                            (pd.month BETWEEN {monthFrom} AND {yearFrom}) 
-                            AND (pd.year BETWEEN {monthTo} AND {yearTo}) 
-                    ) t
-                    GROUP BY t.p_name
-                    ORDER BY t.p_name"; 
+                string sqlRequest = string.Format(GetSqlRequest("GetReport.sql"), 
+                    monthFrom, yearFrom, monthTo, yearTo); 
                 DataTable dt = GetDataTable(sqlRequest); 
                 foreach(DataRow row in dt.Rows)
                 {

@@ -12,7 +12,7 @@ docs/process
 
 HcsBudget.sln
 tests
-src/SQL
+src/SQL/snippets
 
 
 HcsBudget.lnk
