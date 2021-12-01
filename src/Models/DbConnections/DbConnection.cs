@@ -8,12 +8,12 @@ namespace HcsBudget.Models.DbConnections
 {
     public class DbConnection : BaseDbConnection, IHcsDbConnection, IStateDbConnection
     {
-        public void InsertCurrentDate(int month, int year)
+        public void InsertDate(int month, int year)
         {
             try 
             {
                 SetPathToDb(); 
-                string sqlRequest = string.Format(GetSqlRequest("InsertCurrentDate.sql"), 
+                string sqlRequest = string.Format(GetSqlRequest("InsertDate.sql"), 
                     month, year); 
                 ExecuteSql(sqlRequest); 
             }

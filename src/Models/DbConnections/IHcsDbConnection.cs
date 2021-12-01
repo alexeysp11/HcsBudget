@@ -5,7 +5,7 @@ namespace HcsBudget.Models.DbConnections
 {
     public interface IHcsDbConnection 
     {
-        void InsertCurrentDate(int month, int year); 
+        void InsertDate(int month, int year); 
         void GetDistinctYears(ref List<int> years); 
         List<Month> GetMonths();
 

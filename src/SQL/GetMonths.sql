@@ -3,13 +3,13 @@ SELECT
     t.period_id, 
     t.month_no, 
     t.year, 
-    w.english || ' ' || t.year  AS english, 
-    w.german || ' ' || t.year  AS german, 
-    w.russian || ' ' || t.year  AS russian, 
-    w.spanish || ' ' || t.year  AS spanish, 
-    w.portugues || ' ' || t.year  AS portugues, 
-    w.french || ' ' || t.year  AS french, 
-    w.italian || ' ' || t.year  AS italian
+    t.year || ' ' || w.english  AS english, 
+    t.year || ' ' || w.german  AS german, 
+    t.year || ' ' || w.russian  AS russian, 
+    t.year || ' ' || w.spanish  AS spanish, 
+    t.year || ' ' || w.portugues  AS portugues, 
+    t.year || ' ' || w.french  AS french, 
+    t.year || ' ' || w.italian  AS italian
 FROM
 (
     SELECT 

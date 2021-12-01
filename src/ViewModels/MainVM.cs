@@ -63,6 +63,8 @@ namespace HcsBudget.ViewModels
             try
             {
                 InsertCurrentDateIntoDb();
+                InsertNextDateIntoDb(); 
+                InsertPrevDateIntoDb(); 
                 MonthsCollection = this.HcsDbConnection.GetMonths(); 
 
                 List<string> monthNames = new List<string>(); 
@@ -175,7 +177,47 @@ namespace HcsBudget.ViewModels
             try
             {
                 System.DateTime today = System.DateTime.UtcNow.Date; 
-                this.HcsDbConnection.InsertCurrentDate(today.Month, today.Year);
+                this.HcsDbConnection.InsertDate(today.Month, today.Year);
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void InsertNextDateIntoDb()
+        {
+            try
+            {
+                System.DateTime today = System.DateTime.UtcNow.Date; 
+                int year = today.Year; 
+                int month = today.Month; 
+                if (month == 12)
+                {
+                    month = 1; 
+                    year += 1; 
+                }
+                this.HcsDbConnection.InsertDate(month, year);
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void InsertPrevDateIntoDb()
+        {
+            try
+            {
+                System.DateTime today = System.DateTime.UtcNow.Date; 
+                int year = today.Year; 
+                int month = today.Month; 
+                if (month == 1)
+                {
+                    month = 12; 
+                    year -= 1; 
+                }
+                this.HcsDbConnection.InsertDate(month, year);
             }
             catch (System.Exception e)
             {
